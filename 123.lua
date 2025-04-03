@@ -242,60 +242,7 @@ local function CreateWindow(title)
         
         return label
     end
-    
-    -- Tạo Button
-    function window:CreateButton(text, callback)
-        local buttonFrame = Instance.new("Frame")
-        buttonFrame.Name = "ButtonFrame"
-        buttonFrame.Size = UDim2.new(1, -20, 0, 40)
-        buttonFrame.BackgroundTransparency = 1
-        buttonFrame.ZIndex = 11
-        buttonFrame.Parent = contentFrame
-        
-        local button = Instance.new("TextButton")
-        button.Name = "Button"
-        button.Size = UDim2.new(1, 0, 1, 0)
-        button.BackgroundColor3 = colors.primary
-        button.BorderSizePixel = 0
-        button.Text = text
-        button.TextSize = 15
-        button.Font = Enum.Font.GothamBold
-        button.TextColor3 = colors.text
-        button.ZIndex = 12
-        button.Parent = buttonFrame
-        
-        local buttonCorner = Instance.new("UICorner")
-        buttonCorner.CornerRadius = UDim.new(0, 6)
-        buttonCorner.Parent = button
-        
-        -- Hiệu ứng hover
-        button.MouseEnter:Connect(function()
-            CreateTween(button, {BackgroundColor3 = Color3.fromRGB(70, 130, 220)}, 0.2):Play()
-        end)
-        
-        button.MouseLeave:Connect(function()
-            CreateTween(button, {BackgroundColor3 = colors.primary}, 0.2):Play()
-        end)
-        
-        -- Hiệu ứng nhấn
-        button.MouseButton1Down:Connect(function()
-            CreateTween(button, {BackgroundColor3 = Color3.fromRGB(50, 100, 180)}, 0.1):Play()
-        end)
-        
-        button.MouseButton1Up:Connect(function()
-            CreateTween(button, {BackgroundColor3 = Color3.fromRGB(70, 130, 220)}, 0.1):Play()
-        end)
-        
-        -- Callback
-        button.MouseButton1Click:Connect(function()
-            if callback then
-                callback()
-            end
-        end)
-        
-        return button
-    end
-    
+
     -- Tạo Toggle
     function window:CreateToggle(text, default, callback)
         local toggleFrame = Instance.new("Frame")
@@ -660,6 +607,59 @@ local function CreateWindow(title)
             notifyFrame:Destroy()
         end)
     end
+
+    -- Tạo Button
+    function window:CreateButton(text, callback)
+        local buttonFrame = Instance.new("Frame")
+        buttonFrame.Name = "ButtonFrame"
+        buttonFrame.Size = UDim2.new(1, -20, 0, 40)
+        buttonFrame.BackgroundTransparency = 1
+        buttonFrame.ZIndex = 11
+        buttonFrame.Parent = contentFrame
+        
+        local button = Instance.new("TextButton")
+        button.Name = "Button"
+        button.Size = UDim2.new(1, 0, 1, 0)
+        button.BackgroundColor3 = colors.primary
+        button.BorderSizePixel = 0
+        button.Text = text
+        button.TextSize = 15
+        button.Font = Enum.Font.GothamBold
+        button.TextColor3 = colors.text
+        button.ZIndex = 12
+        button.Parent = buttonFrame
+        
+        local buttonCorner = Instance.new("UICorner")
+        buttonCorner.CornerRadius = UDim.new(0, 6)
+        buttonCorner.Parent = button
+        
+        -- Hiệu ứng hover
+        button.MouseEnter:Connect(function()
+            CreateTween(button, {BackgroundColor3 = Color3.fromRGB(70, 130, 220)}, 0.2):Play()
+        end)
+        
+        button.MouseLeave:Connect(function()
+            CreateTween(button, {BackgroundColor3 = colors.primary}, 0.2):Play()
+        end)
+        
+        -- Hiệu ứng nhấn
+        button.MouseButton1Down:Connect(function()
+            CreateTween(button, {BackgroundColor3 = Color3.fromRGB(50, 100, 180)}, 0.1):Play()
+        end)
+        
+        button.MouseButton1Up:Connect(function()
+            CreateTween(button, {BackgroundColor3 = Color3.fromRGB(70, 130, 220)}, 0.1):Play()
+        end)
+        
+        -- Callback
+        button.MouseButton1Click:Connect(function()
+            if callback then
+                callback()
+            end
+        end)
+        
+        return button
+    end
     
     return window
 end
@@ -667,7 +667,11 @@ end
 -- Khởi tạo giao diện người dùng
 local function InitializeUI()
     -- Khởi tạo window
-    local mainWindow = CreateWindow("LOGIN HACK")
+    local mainWindow = CreateWindow("KDZ - LOGIN HACK")
+
+local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
+    _G.EnteredKey = text
+end)
     
     -- Tạo label thông tin
     mainWindow:CreateLabel("[+] https://discord.com/invite/gtQ54c43G3")
@@ -688,10 +692,6 @@ local function InitializeUI()
         end
     end)  
     mainWindow:CreateLabel("NEU BAN CHUA CO KEY? MUA KEY TAI @KDZ.")
-    
-local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
-    _G.EnteredKey = text
-end)
 
     -- Hiệu ứng loading
     local function ShowLoadingScreen()
