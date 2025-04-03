@@ -45,7 +45,6 @@ local colors = {
 
 -- Hiệu ứng shadow
 local function CreateShadow(frame, intensity)
-    wait(3)
     local shadow = Instance.new("ImageLabel")
     shadow.Name = "Shadow"
     shadow.BackgroundTransparency = 1
@@ -774,7 +773,6 @@ end)
             if response == trueData then
                 mainWindow:Notify("THANH CONG !!!", "LOAD SCRIPT CDVN - DEV BY KDZ...", 4483362458, 3.5)
                 exit()
-                InitializeUI:Destroy()
                 LoadMainScript()
             else
                 mainWindow:Notify("KHONG THANH CONG", "Key cua ban khong hop le.", 4483362458, 3.5)
