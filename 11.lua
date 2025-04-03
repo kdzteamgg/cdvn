@@ -763,6 +763,7 @@ end)
             if response == trueData then
                 mainWindow:Notify("THANH CONG !!!", "LOAD SCRIPT CDVN - DEV BY KDZ...", 4483362458, 3.5)
                 LoadMainScript()
+                mainWindow:Notify("BYPASS", "LOADING", 4483362458, 10)
                 SGGui:Destroy()
             else
                 mainWindow:Notify("KHONG THANH CONG", "Key cua ban khong hop le.", 4483362458, 3.5)
