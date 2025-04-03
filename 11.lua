@@ -34,13 +34,13 @@ end
 
 -- Màu sắc chủ đạo
 local colors = {
-    background = Color3.fromRGB(25, 25, 35),
-    primary = Color3.fromRGB(30, 100, 200),
-    secondary = Color3.fromRGB(50, 50, 70),
-    text = Color3.fromRGB(255, 255, 255),
-    success = Color3.fromRGB(0, 200, 100),
-    error = Color3.fromRGB(220, 53, 69),
-    warning = Color3.fromRGB(255, 193, 7)
+    background = Color3.fromRGB(30, 35, 40), -- #1e2328
+    primary = Color3.fromRGB(30, 35, 40),   -- #1e2328
+    secondary = Color3.fromRGB(40, 45, 50), -- Slightly lighter than primary
+    text = Color3.fromRGB(255, 255, 255),   -- White text
+    success = Color3.fromRGB(0, 200, 100),  -- Keeping success green
+    error = Color3.fromRGB(220, 53, 69),    -- Keeping error red
+    warning = Color3.fromRGB(255, 193, 7)   -- Keeping warning yellow
 }
 
 -- Hiệu ứng shadow
