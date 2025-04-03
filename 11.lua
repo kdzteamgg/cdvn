@@ -760,7 +760,7 @@ local function InitializeUI()
     mainWindow:CreateLabel("NEU BAN CHUA CO KEY? MUA KEY TAI @KDZ.")
     
     -- Tạo button xác nhận LAST - this will make it appear at the bottom
-    local verifyButton = mainWindow:CreateButton("====== XAC NHAN KEY HACK ======", function()
+    local verifyButton = mainWindow:CreateButton("XAC NHAN KEY", function()
         if _G.EnteredKey and _G.EnteredKey ~= "" then
             local response = KeyGuardLibrary.validateDefaultKey(_G.EnteredKey)
             
