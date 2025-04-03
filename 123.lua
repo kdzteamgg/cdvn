@@ -1,3 +1,4 @@
+-- Up
 local KeyGuardLibrary = loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
 local trueData = "32a8738d7e644ad2b469d530b6943449"
 local falseData = "6335f41a8d1a475fb973d0bbfe0f20f7"
@@ -83,6 +84,7 @@ end
 
 -- Tạo cửa sổ chính
 local function CreateWindow(title)
+    wait(2)
     -- Container chính
     local mainFrame = Instance.new("Frame")
     mainFrame.Name = "MainFrame"
