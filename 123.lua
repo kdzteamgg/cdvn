@@ -44,6 +44,7 @@ local colors = {
 
 -- Hiệu ứng shadow
 local function CreateShadow(frame, intensity)
+    wait(3)
     local shadow = Instance.new("ImageLabel")
     shadow.Name = "Shadow"
     shadow.BackgroundTransparency = 1
@@ -145,7 +146,7 @@ local function CreateWindow(title)
     closeButton.Size = UDim2.new(0, 30, 0, 30)
     closeButton.Position = UDim2.new(1, -35, 0, 5)
     closeButton.BackgroundTransparency = 1
-    closeButton.Text = "✕"
+    closeButton.Text = ""
     closeButton.TextSize = 18
     closeButton.Font = Enum.Font.GothamBold
     closeButton.TextColor3 = colors.text
@@ -768,7 +769,7 @@ end)
         else
             mainWindow:Notify("THONG BAO", "Hay nhap key roi an nut XAC MINH", 4483362458, 3.5)
         end
-    end)  
+    end)
     mainWindow:CreateLabel("NEU BAN CHUA CO KEY? MUA KEY TAI @KDZ.")
     
     return mainWindow
