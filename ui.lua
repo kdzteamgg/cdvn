@@ -685,27 +685,19 @@ local function InitializeUI()
             
             if response == trueData then
                 mainWindow:Notify("THANH CONG !!!", "LOAD SCRIPT CDVN - DEV BY KDZ...", 4483362458, 3.5)
-                LoadMainScript()
+                local closeTween = CreateTween(mainFrame, {Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0.5, 0, 0.5, 0)}, 0.5)
+                closeTween:Play()
+                closeTween.Completed:Wait()
                 SGGui:Destroy()
+                LoadMainScript()
             else
                 mainWindow:Notify("KHONG THANH CONG", "Key cua ban khong hop le.", 4483362458, 3.5)
             end
         else
             mainWindow:Notify("THONG BAO", "Hay nhap key roi an nut XAC MINH", 4483362458, 3.5)
         end
-    end)
-    
-    -- Các thành phần demo bổ sung (Toggle, Slider)
-    local autoToggle = mainWindow:CreateToggle("Auto Farm", false, function(value)
-        -- Callback khi toggle thay đổi
-    end)
-    
-    local speedSlider = mainWindow:CreateSlider("Toc Do", 1, 100, 50, function(value)
-        -- Callback khi slider thay đổi
-    end)
-    
-    -- Tạo thêm label hướng dẫn
-    mainWindow:CreateLabel("Luu y: Chi nhap key duoc cung cap tu Discord.")
+    end)  
+    mainWindow:CreateLabel("NEU BAN CHUA CO KEY? MUA KEY TAI @KDZ.")
     
     -- Hiệu ứng loading
     local function ShowLoadingScreen()
