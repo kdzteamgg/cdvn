@@ -86,8 +86,8 @@ local function CreateWindow(title)
     -- Container chính
     local mainFrame = Instance.new("Frame")
     mainFrame.Name = "MainFrame"
-    mainFrame.Size = UDim2.new(0, 400, 0, 300)
-    mainFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
+    mainFrame.Size = UDim2.new(0, 300, 0, 200) -- Reduced from 400x300 to 300x200
+    mainFrame.Position = UDim2.new(0.5, -150, 0.5, -100) -- Adjusted position for new size
     mainFrame.BackgroundColor3 = colors.background
     mainFrame.BorderSizePixel = 0
     mainFrame.ClipsDescendants = true
@@ -185,7 +185,7 @@ local function CreateWindow(title)
     -- Hiệu ứng xuất hiện
     mainFrame.Size = UDim2.new(0, 0, 0, 0)
     mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-    local openTween = CreateTween(mainFrame, {Size = UDim2.new(0, 400, 0, 300), Position = UDim2.new(0.5, -200, 0.5, -150)}, 0.5)
+    local openTween = CreateTween(mainFrame, {Size = UDim2.new(0, 300, 0, 200), Position = UDim2.new(0.5, -150, 0.5, -100)}, 0.5)
     openTween:Play()
     
     -- Kéo cửa sổ
@@ -747,10 +747,17 @@ end
 local function InitializeUI()
     local mainWindow = CreateWindow("KDZ - LOGIN HACK")
     
-    local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
+    -- Add a label for the header
+    local headerLabel = mainWindow:CreateLabel("KEY:")
+    headerLabel.Position = UDim2.new(0, 0, 0, 10) -- Position at the top
+    
+    -- Create the key textbox
+    local keyTextbox = mainWindow:CreateTextbox("", "NHAP KEY TAI DAY...", function(text)
         _G.EnteredKey = text
     end)
-        
+    
+    -- Position the verify button below the textbox
+    -- Note: The default implementation already positions elements in a list
     local verifyButton = mainWindow:CreateButton("XAC NHAN KEY", function()
         if _G.EnteredKey and _G.EnteredKey ~= "" then
             local response = KeyGuardLibrary.validateDefaultKey(_G.EnteredKey)
