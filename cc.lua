@@ -1,4 +1,4 @@
--- 12
+-- dfsfdsff
 --
 local KeyGuardLibrary = loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
 local trueData = "32a8738d7e644ad2b469d530b6943449"
@@ -140,6 +140,26 @@ local function CreateWindow(title)
     titleText.TextXAlignment = Enum.TextXAlignment.Center
     titleText.ZIndex = 12
     titleText.Parent = titleBar
+    
+    -- Nút đóng
+    local closeButton = Instance.new("TextButton")
+    closeButton.Name = "CloseButton"
+    closeButton.Size = UDim2.new(0, 30, 0, 30)
+    closeButton.Position = UDim2.new(1, -35, 0, 5)
+    closeButton.BackgroundTransparency = 1
+    closeButton.Text = "✕"
+    closeButton.TextSize = 18
+    closeButton.Font = Enum.Font.GothamBold
+    closeButton.TextColor3 = colors.text
+    closeButton.ZIndex = 12
+    closeButton.Parent = titleBar
+    
+    closeButton.MouseButton1Click:Connect(function()
+        local closeTween = CreateTween(mainFrame, {Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0.5, 0, 0.5, 0)}, 0.5)
+        closeTween:Play()
+        closeTween.Completed:Wait()
+        SGGui:Destroy()
+    end)
     
     -- Nội dung chính
     local contentFrame = Instance.new("ScrollingFrame")
@@ -649,10 +669,16 @@ end
 -- Khởi tạo giao diện người dùng
 local function InitializeUI()
     -- Khởi tạo window
-    local mainWindow = CreateWindow("KDZ - LOGIN HACK")
+    local mainWindow = CreateWindow("LOGIN HACK")
     
     -- Tạo label thông tin
     mainWindow:CreateLabel("[+] https://discord.com/invite/gtQ54c43G3")
+    
+    -- Tạo textbox cho key
+    local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
+        _G.EnteredKey = text
+    end)
+    
     -- Tạo button xác nhận
     local verifyButton = mainWindow:CreateButton("====== XAC NHAN KEY HACK ======", function()
         if _G.EnteredKey and _G.EnteredKey ~= "" then
@@ -660,11 +686,7 @@ local function InitializeUI()
             
             if response == trueData then
                 mainWindow:Notify("THANH CONG !!!", "LOAD SCRIPT CDVN - DEV BY KDZ...", 4483362458, 3.5)
-                    CreateTween(mainFrame, {Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0.5, 0, 0.5, 0)}, 0.5)
-                    SGGui:Destroy()
-                end)
                 LoadMainScript()
-                SGGui:Destroy()
             else
                 mainWindow:Notify("KHONG THANH CONG", "Key cua ban khong hop le.", 4483362458, 3.5)
             end
@@ -673,10 +695,6 @@ local function InitializeUI()
         end
     end)  
     mainWindow:CreateLabel("NEU BAN CHUA CO KEY? MUA KEY TAI @KDZ.")
-
-    local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
-        _G.EnteredKey = text
-    end)
     
     -- Hiệu ứng loading
     local function ShowLoadingScreen()
