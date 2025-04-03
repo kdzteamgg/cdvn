@@ -45,7 +45,6 @@ local colors = {
 
 -- Hiệu ứng shadow
 local function CreateShadow(frame, intensity)
-    wait(2)
     local shadow = Instance.new("ImageLabel")
     shadow.Name = "Shadow"
     shadow.BackgroundTransparency = 1
