@@ -1,4 +1,3 @@
--- cc
 local KDZUI = {}
 
 local UserInputService = game:GetService("UserInputService")
@@ -9,7 +8,7 @@ local player = game:GetService("Players").LocalPlayer
 local mouse = player:GetMouse()
 
 local SGGui = Instance.new("ScreenGui")
-SGGui.Name = "KDZ Menu"
+SGGui.Name = "SGLogin"
 SGGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 SGGui.ResetOnSpawn = false
 SGGui.DisplayOrder = 999
@@ -46,6 +45,7 @@ local function CreateShadow(frame, intensity)
     return shadow
 end
 
+-- Tạo hiệu ứng
 local function CreateTween(instance, properties, duration, easingStyle, easingDirection)
     local tween = TweenService:Create(
         instance,
@@ -55,6 +55,7 @@ local function CreateTween(instance, properties, duration, easingStyle, easingDi
     return tween
 end
 
+-- Tạo icon cho thông báo
 local function CreateIcon(parent, image, position, size)
     local icon = Instance.new("ImageLabel")
     icon.BackgroundTransparency = 1
@@ -65,7 +66,9 @@ local function CreateIcon(parent, image, position, size)
     return icon
 end
 
+-- Tạo cửa sổ chính
 local function CreateWindow(title)
+    -- Container chính
     local mainFrame = Instance.new("Frame")
     mainFrame.Name = "MainFrame"
     mainFrame.Size = UDim2.new(0, 400, 0, 300)
@@ -75,11 +78,16 @@ local function CreateWindow(title)
     mainFrame.ClipsDescendants = true
     mainFrame.Parent = SGGui
     mainFrame.ZIndex = 10
+    
+    -- Bo tròn cạnh
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, 8)
     corner.Parent = mainFrame
+    
+    -- Thêm shadow
     CreateShadow(mainFrame, 0.5)
     
+    -- Thanh tiêu đề
     local titleBar = Instance.new("Frame")
     titleBar.Name = "TitleBar"
     titleBar.Size = UDim2.new(1, 0, 0, 40)
@@ -92,7 +100,8 @@ local function CreateWindow(title)
     local titleCorner = Instance.new("UICorner")
     titleCorner.CornerRadius = UDim.new(0, 8)
     titleCorner.Parent = titleBar
-
+    
+    -- Chỉ bo tròn phía trên
     local titleBottomBar = Instance.new("Frame")
     titleBottomBar.Name = "TitleBottomCover"
     titleBottomBar.Size = UDim2.new(1, 0, 0, 10)
@@ -101,7 +110,8 @@ local function CreateWindow(title)
     titleBottomBar.BorderSizePixel = 0
     titleBottomBar.ZIndex = 11
     titleBottomBar.Parent = titleBar
-
+    
+    -- Tiêu đề
     local titleText = Instance.new("TextLabel")
     titleText.Name = "Title"
     titleText.Size = UDim2.new(1, -20, 1, 0)
@@ -114,7 +124,8 @@ local function CreateWindow(title)
     titleText.TextXAlignment = Enum.TextXAlignment.Center
     titleText.ZIndex = 12
     titleText.Parent = titleBar
-
+    
+    -- Nút đóng
     local closeButton = Instance.new("TextButton")
     closeButton.Name = "CloseButton"
     closeButton.Size = UDim2.new(0, 30, 0, 30)
@@ -133,7 +144,8 @@ local function CreateWindow(title)
         closeTween.Completed:Wait()
         SGGui:Destroy()
     end)
-
+    
+    -- Nội dung chính
     local contentFrame = Instance.new("ScrollingFrame")
     contentFrame.Name = "Content"
     contentFrame.Size = UDim2.new(1, -20, 1, -60)
@@ -145,20 +157,24 @@ local function CreateWindow(title)
     contentFrame.ZIndex = 11
     contentFrame.Parent = mainFrame
     
+    -- Layout cho nội dung
     local contentLayout = Instance.new("UIListLayout")
     contentLayout.Padding = UDim.new(0, 10)
     contentLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
     contentLayout.Parent = contentFrame
     
+    -- Tự động điều chỉnh kích thước canvas
     contentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
         contentFrame.CanvasSize = UDim2.new(0, 0, 0, contentLayout.AbsoluteContentSize.Y + 10)
     end)
     
+    -- Hiệu ứng xuất hiện
     mainFrame.Size = UDim2.new(0, 0, 0, 0)
     mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
     local openTween = CreateTween(mainFrame, {Size = UDim2.new(0, 400, 0, 300), Position = UDim2.new(0.5, -200, 0.5, -150)}, 0.5)
     openTween:Play()
-
+    
+    -- Kéo cửa sổ
     local dragging, dragInput, dragStart, startPos
     
     local function updateDrag(input)
@@ -191,10 +207,12 @@ local function CreateWindow(title)
         end
     end)
     
+    -- Các hàm tạo thành phần
     local window = {}
     window.ContentFrame = contentFrame
     window.MainFrame = mainFrame
-
+    
+    -- Tạo Label
     function window:CreateLabel(text)
         local label = Instance.new("TextLabel")
         label.Name = "Label"
@@ -211,6 +229,7 @@ local function CreateWindow(title)
         return label
     end
     
+    -- Tạo Button
     function window:CreateButton(text, callback)
         local buttonFrame = Instance.new("Frame")
         buttonFrame.Name = "ButtonFrame"
@@ -234,7 +253,8 @@ local function CreateWindow(title)
         local buttonCorner = Instance.new("UICorner")
         buttonCorner.CornerRadius = UDim.new(0, 6)
         buttonCorner.Parent = button
-
+        
+        -- Hiệu ứng hover
         button.MouseEnter:Connect(function()
             CreateTween(button, {BackgroundColor3 = Color3.fromRGB(70, 130, 220)}, 0.2):Play()
         end)
@@ -242,7 +262,8 @@ local function CreateWindow(title)
         button.MouseLeave:Connect(function()
             CreateTween(button, {BackgroundColor3 = colors.primary}, 0.2):Play()
         end)
-
+        
+        -- Hiệu ứng nhấn
         button.MouseButton1Down:Connect(function()
             CreateTween(button, {BackgroundColor3 = Color3.fromRGB(50, 100, 180)}, 0.1):Play()
         end)
@@ -250,7 +271,8 @@ local function CreateWindow(title)
         button.MouseButton1Up:Connect(function()
             CreateTween(button, {BackgroundColor3 = Color3.fromRGB(70, 130, 220)}, 0.1):Play()
         end)
-
+        
+        -- Callback
         button.MouseButton1Click:Connect(function()
             if callback then
                 callback()
@@ -259,7 +281,8 @@ local function CreateWindow(title)
         
         return button
     end
-
+    
+    -- Tạo Toggle
     function window:CreateToggle(text, default, callback)
         local toggleFrame = Instance.new("Frame")
         toggleFrame.Name = "ToggleFrame"
@@ -339,7 +362,8 @@ local function CreateWindow(title)
             end
         }
     end
-
+    
+    -- Tạo Slider
     function window:CreateSlider(text, min, max, default, callback)
         local sliderFrame = Instance.new("Frame")
         sliderFrame.Name = "SliderFrame"
@@ -480,7 +504,8 @@ local function CreateWindow(title)
             end
         }
     end
-
+    
+    -- Tạo TextBox
     function window:CreateTextbox(text, placeholder, callback)
         local textboxFrame = Instance.new("Frame")
         textboxFrame.Name = "TextboxFrame"
@@ -529,7 +554,8 @@ local function CreateWindow(title)
         textbox.ClearTextOnFocus = false
         textbox.ZIndex = 13
         textbox.Parent = textboxContainer
-
+        
+        -- Hiệu ứng focus
         textbox.Focused:Connect(function()
             CreateTween(textboxContainer, {BackgroundColor3 = Color3.fromRGB(60, 60, 80)}, 0.2):Play()
         end)
@@ -552,7 +578,8 @@ local function CreateWindow(title)
             end
         }
     end
-
+    
+    -- Hiển thị thông báo
     function window:Notify(title, content, image, duration)
         duration = duration or 3
         
@@ -620,6 +647,51 @@ local function CreateWindow(title)
         end)
     end
     
+    return window
+end
+
+-- Khởi tạo giao diện người dùng
+local function InitializeUI()
+    -- Khởi tạo window
+    local mainWindow = CreateWindow("LOGIN HACK")
+    
+    -- Tạo label thông tin
+    mainWindow:CreateLabel("[+] https://discord.com/invite/gtQ54c43G3")
+    
+    -- Tạo textbox cho key
+    local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
+        _G.EnteredKey = text
+    end)
+    
+    -- Tạo button xác nhận
+    local verifyButton = mainWindow:CreateButton("====== XAC NHAN KEY HACK ======", function()
+        if _G.EnteredKey and _G.EnteredKey ~= "" then
+            local response = KeyGuardLibrary.validateDefaultKey(_G.EnteredKey)
+            
+            if response == trueData then
+                mainWindow:Notify("THANH CONG !!!", "LOAD SCRIPT CDVN - DEV BY KDZ...", 4483362458, 3.5)
+                LoadMainScript()
+            else
+                mainWindow:Notify("KHONG THANH CONG", "Key cua ban khong hop le.", 4483362458, 3.5)
+            end
+        else
+            mainWindow:Notify("THONG BAO", "Hay nhap key roi an nut XAC MINH", 4483362458, 3.5)
+        end
+    end)
+    
+    -- Các thành phần demo bổ sung (Toggle, Slider)
+    local autoToggle = mainWindow:CreateToggle("Auto Farm", false, function(value)
+        -- Callback khi toggle thay đổi
+    end)
+    
+    local speedSlider = mainWindow:CreateSlider("Toc Do", 1, 100, 50, function(value)
+        -- Callback khi slider thay đổi
+    end)
+    
+    -- Tạo thêm label hướng dẫn
+    mainWindow:CreateLabel("Luu y: Chi nhap key duoc cung cap tu Discord.")
+    
+    -- Hiệu ứng loading
     local function ShowLoadingScreen()
         local loadingScreen = Instance.new("Frame")
         loadingScreen.Name = "LoadingScreen"
@@ -634,7 +706,7 @@ local function CreateWindow(title)
         loadingText.Size = UDim2.new(0, 300, 0, 30)
         loadingText.Position = UDim2.new(0.5, -150, 0.5, -15)
         loadingText.BackgroundTransparency = 1
-        loadingText.Text = "HI! I AM KDZ"
+        loadingText.Text = "Loading ServiceGame"
         loadingText.TextSize = 18
         loadingText.Font = Enum.Font.GothamBold
         loadingText.TextColor3 = colors.text
@@ -646,7 +718,7 @@ local function CreateWindow(title)
         loadingSubText.Size = UDim2.new(0, 300, 0, 20)
         loadingSubText.Position = UDim2.new(0.5, -150, 0.5, 15)
         loadingSubText.BackgroundTransparency = 1
-        loadingSubText.Text = "script loading..."
+        loadingSubText.Text = "by SG_TEAM"
         loadingSubText.TextSize = 14
         loadingSubText.Font = Enum.Font.Gotham
         loadingSubText.TextColor3 = colors.text
@@ -679,6 +751,7 @@ local function CreateWindow(title)
         progressCorner.CornerRadius = UDim.new(0, 3)
         progressCorner.Parent = loadingProgress
         
+        -- Hiệu ứng loading
         CreateTween(loadingProgress, {Size = UDim2.new(1, 0, 1, 0)}, 2, Enum.EasingStyle.Quad):Play()
         
         task.delay(2, function()
@@ -693,6 +766,11 @@ local function CreateWindow(title)
             end)
         end)
     end
-
-    return window
+    
+    ShowLoadingScreen()
+    
+    return mainWindow
 end
+
+KDZUI.CreateWindow = CreateWindow
+KDZUI.InitializeUI = InitializeUI
