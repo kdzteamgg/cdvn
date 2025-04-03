@@ -708,7 +708,7 @@ end)
         loadingText.Size = UDim2.new(0, 300, 0, 30)
         loadingText.Position = UDim2.new(0.5, -150, 0.5, -15)
         loadingText.BackgroundTransparency = 1
-        loadingText.Text = "Loading ServiceGame"
+        loadingText.Text = "KDZ - CHOI GAME LA PHAI CH4AT!"
         loadingText.TextSize = 18
         loadingText.Font = Enum.Font.GothamBold
         loadingText.TextColor3 = colors.text
@@ -720,7 +720,7 @@ end)
         loadingSubText.Size = UDim2.new(0, 300, 0, 20)
         loadingSubText.Position = UDim2.new(0.5, -150, 0.5, 15)
         loadingSubText.BackgroundTransparency = 1
-        loadingSubText.Text = "by SG_TEAM"
+        loadingSubText.Text = "loading..."
         loadingSubText.TextSize = 14
         loadingSubText.Font = Enum.Font.Gotham
         loadingSubText.TextColor3 = colors.text
