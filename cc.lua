@@ -1,5 +1,3 @@
--- dfsfdsff
---
 local KeyGuardLibrary = loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
 local trueData = "32a8738d7e644ad2b469d530b6943449"
 local falseData = "6335f41a8d1a475fb973d0bbfe0f20f7"
@@ -11,7 +9,7 @@ KeyGuardLibrary.Set({
     falseData = falseData,
 })
 
-local SGLoginUI = {}
+local KDZUI = {}
 
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
@@ -673,12 +671,7 @@ local function InitializeUI()
     
     -- Tạo label thông tin
     mainWindow:CreateLabel("[+] https://discord.com/invite/gtQ54c43G3")
-    
-    -- Tạo textbox cho key
-    local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
-        _G.EnteredKey = text
-    end)
-    
+
     -- Tạo button xác nhận
     local verifyButton = mainWindow:CreateButton("====== XAC NHAN KEY HACK ======", function()
         if _G.EnteredKey and _G.EnteredKey ~= "" then
@@ -696,6 +689,10 @@ local function InitializeUI()
     end)  
     mainWindow:CreateLabel("NEU BAN CHUA CO KEY? MUA KEY TAI @KDZ.")
     
+local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
+    _G.EnteredKey = text
+end)
+
     -- Hiệu ứng loading
     local function ShowLoadingScreen()
         local loadingScreen = Instance.new("Frame")
@@ -777,9 +774,9 @@ local function InitializeUI()
     return mainWindow
 end
 
-SGLoginUI.CreateWindow = CreateWindow
-SGLoginUI.InitializeUI = InitializeUI
+KDZUI.CreateWindow = CreateWindow
+KDZUI.InitializeUI = InitializeUI
 
-local mainInterface = SGLoginUI.InitializeUI()
+local mainInterface = KDZUI.InitializeUI()
 
-return SGLoginUI
+return KDZUI
