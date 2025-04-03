@@ -119,6 +119,9 @@ local function ShowLoadingScreen()
     end)
 end
 
+ShowLoadingScreen()
+wait(2)
+
 -- Hiệu ứng shadow
 local function CreateShadow(frame, intensity)
     local shadow = Instance.new("ImageLabel")
@@ -736,9 +739,6 @@ local function CreateWindow(title)
         
         return button
     end
-    
-    ShowLoadingScreen()
-    wait(2)
     return window
 end
 
