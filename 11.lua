@@ -745,29 +745,20 @@ end
 
 -- Khởi tạo giao diện người dùng
 local function InitializeUI()
-    -- Khởi tạo window
     local mainWindow = CreateWindow("KDZ - LOGIN HACK")
     
-    -- Tạo label thông tin FIRST
-    mainWindow:CreateLabel("[+] https://discord.com/invite/gtQ54c43G3")
-    
-    -- Tạo textbox SECOND
     local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
         _G.EnteredKey = text
     end)
-    
-    -- Tạo label thông tin THIRD
-    mainWindow:CreateLabel("NEU BAN CHUA CO KEY? MUA KEY TAI @KDZ.")
-    
-    -- Tạo button xác nhận LAST - this will make it appear at the bottom
+        
     local verifyButton = mainWindow:CreateButton("XAC NHAN KEY", function()
         if _G.EnteredKey and _G.EnteredKey ~= "" then
             local response = KeyGuardLibrary.validateDefaultKey(_G.EnteredKey)
             
             if response == trueData then
-                mainWindow:Notify("THANH CONG !!!", "LOAD SCRIPT CDVN - DEV BY KDZ...", 4483362458, 3.5)
-                LoadMainScript()
+                mainWindow:Notify("THANH CONG !!!", "LOAD SCRIPT...", 4483362458, 3.5)
                 mainWindow:Notify("BYPASS", "LOADING", 4483362458, 10)
+                LoadMainScript()
                 SGGui:Destroy()
             else
                 mainWindow:Notify("KHONG THANH CONG", "Key cua ban khong hop le.", 4483362458, 3.5)
