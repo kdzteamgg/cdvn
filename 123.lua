@@ -660,38 +660,6 @@ local function CreateWindow(title)
         
         return button
     end
-    
-    return window
-end
-
--- Khởi tạo giao diện người dùng
-local function InitializeUI()
-    -- Khởi tạo window
-    local mainWindow = CreateWindow("KDZ - LOGIN HACK")
-
-local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
-    _G.EnteredKey = text
-end)
-    
-    -- Tạo label thông tin
-    mainWindow:CreateLabel("[+] https://discord.com/invite/gtQ54c43G3")
-
-    -- Tạo button xác nhận
-    local verifyButton = mainWindow:CreateButton("====== XAC NHAN KEY HACK ======", function()
-        if _G.EnteredKey and _G.EnteredKey ~= "" then
-            local response = KeyGuardLibrary.validateDefaultKey(_G.EnteredKey)
-            
-            if response == trueData then
-                mainWindow:Notify("THANH CONG !!!", "LOAD SCRIPT CDVN - DEV BY KDZ...", 4483362458, 3.5)
-                LoadMainScript()
-            else
-                mainWindow:Notify("KHONG THANH CONG", "Key cua ban khong hop le.", 4483362458, 3.5)
-            end
-        else
-            mainWindow:Notify("THONG BAO", "Hay nhap key roi an nut XAC MINH", 4483362458, 3.5)
-        end
-    end)  
-    mainWindow:CreateLabel("NEU BAN CHUA CO KEY? MUA KEY TAI @KDZ.")
 
     -- Hiệu ứng loading
     local function ShowLoadingScreen()
@@ -770,6 +738,38 @@ end)
     end
     
     ShowLoadingScreen()
+    wait(2)
+    return window
+end
+
+-- Khởi tạo giao diện người dùng
+local function InitializeUI()
+    -- Khởi tạo window
+    local mainWindow = CreateWindow("KDZ - LOGIN HACK")
+
+local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
+    _G.EnteredKey = text
+end)
+    
+    -- Tạo label thông tin
+    mainWindow:CreateLabel("[+] https://discord.com/invite/gtQ54c43G3")
+
+    -- Tạo button xác nhận
+    local verifyButton = mainWindow:CreateButton("====== XAC NHAN KEY HACK ======", function()
+        if _G.EnteredKey and _G.EnteredKey ~= "" then
+            local response = KeyGuardLibrary.validateDefaultKey(_G.EnteredKey)
+            
+            if response == trueData then
+                mainWindow:Notify("THANH CONG !!!", "LOAD SCRIPT CDVN - DEV BY KDZ...", 4483362458, 3.5)
+                LoadMainScript()
+            else
+                mainWindow:Notify("KHONG THANH CONG", "Key cua ban khong hop le.", 4483362458, 3.5)
+            end
+        else
+            mainWindow:Notify("THONG BAO", "Hay nhap key roi an nut XAC MINH", 4483362458, 3.5)
+        end
+    end)  
+    mainWindow:CreateLabel("NEU BAN CHUA CO KEY? MUA KEY TAI @KDZ.")
     
     return mainWindow
 end
