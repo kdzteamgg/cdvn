@@ -1,4 +1,15 @@
-local KDZUI = {}
+local KeyGuardLibrary = loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
+local trueData = "32a8738d7e644ad2b469d530b6943449"
+local falseData = "6335f41a8d1a475fb973d0bbfe0f20f7"
+
+KeyGuardLibrary.Set({
+    publicToken = "d0469cbce3ac4d349882f93d41a284ce",
+    privateToken = "7998f6adb25a40d2a8e0af60902318ac",
+    trueData = trueData,
+    falseData = falseData,
+})
+
+local SGLoginUI = {}
 
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
@@ -7,6 +18,7 @@ local RunService = game:GetService("RunService")
 local player = game:GetService("Players").LocalPlayer
 local mouse = player:GetMouse()
 
+-- Tạo ScreenGui
 local SGGui = Instance.new("ScreenGui")
 SGGui.Name = "SGLogin"
 SGGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -19,6 +31,7 @@ else
     SGGui.Parent = CoreGui
 end
 
+-- Màu sắc chủ đạo
 local colors = {
     background = Color3.fromRGB(25, 25, 35),
     primary = Color3.fromRGB(30, 100, 200),
@@ -29,6 +42,7 @@ local colors = {
     warning = Color3.fromRGB(255, 193, 7)
 }
 
+-- Hiệu ứng shadow
 local function CreateShadow(frame, intensity)
     local shadow = Instance.new("ImageLabel")
     shadow.Name = "Shadow"
@@ -650,85 +664,131 @@ local function CreateWindow(title)
     return window
 end
 
--- Hiệu ứng loading
-local function ShowLoadingScreen()
-    local loadingScreen = Instance.new("Frame")
-    loadingScreen.Name = "LoadingScreen"
-    loadingScreen.Size = UDim2.new(1, 0, 1, 0)
-    loadingScreen.BackgroundColor3 = colors.background
-    loadingScreen.BackgroundTransparency = 0.2
-    loadingScreen.ZIndex = 150
-    loadingScreen.Parent = SGGui
+-- Khởi tạo giao diện người dùng
+local function InitializeUI()
+    -- Khởi tạo window
+    local mainWindow = CreateWindow("LOGIN HACK")
     
-    local loadingText = Instance.new("TextLabel")
-    loadingText.Name = "LoadingText"
-    loadingText.Size = UDim2.new(0, 300, 0, 30)
-    loadingText.Position = UDim2.new(0.5, -150, 0.5, -15)
-    loadingText.BackgroundTransparency = 1
-    loadingText.Text = "Loading ServiceGame"
-    loadingText.TextSize = 18
-    loadingText.Font = Enum.Font.GothamBold
-    loadingText.TextColor3 = colors.text
-    loadingText.ZIndex = 151
-    loadingText.Parent = loadingScreen
+    -- Tạo label thông tin
+    mainWindow:CreateLabel("[+] https://discord.com/invite/gtQ54c43G3")
     
-    local loadingSubText = Instance.new("TextLabel")
-    loadingSubText.Name = "LoadingSubText"
-    loadingSubText.Size = UDim2.new(0, 300, 0, 20)
-    loadingSubText.Position = UDim2.new(0.5, -150, 0.5, 15)
-    loadingSubText.BackgroundTransparency = 1
-    loadingSubText.Text = "by SG_TEAM"
-    loadingSubText.TextSize = 14
-    loadingSubText.Font = Enum.Font.Gotham
-    loadingSubText.TextColor3 = colors.text
-    loadingSubText.TextTransparency = 0.3
-    loadingSubText.ZIndex = 151
-    loadingSubText.Parent = loadingScreen
+    -- Tạo textbox cho key
+    local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
+        _G.EnteredKey = text
+    end)
     
-    local loadingBar = Instance.new("Frame")
-    loadingBar.Name = "LoadingBar"
-    loadingBar.Size = UDim2.new(0, 300, 0, 6)
-    loadingBar.Position = UDim2.new(0.5, -150, 0.5, 40)
-    loadingBar.BackgroundColor3 = colors.secondary
-    loadingBar.BorderSizePixel = 0
-    loadingBar.ZIndex = 151
-    loadingBar.Parent = loadingScreen
+    -- Tạo button xác nhận
+    local verifyButton = mainWindow:CreateButton("====== XAC NHAN KEY HACK ======", function()
+        if _G.EnteredKey and _G.EnteredKey ~= "" then
+            local response = KeyGuardLibrary.validateDefaultKey(_G.EnteredKey)
+            
+            if response == trueData then
+                mainWindow:Notify("THANH CONG !!!", "LOAD SCRIPT CDVN - DEV BY KDZ...", 4483362458, 3.5)
+                LoadMainScript()
+            else
+                mainWindow:Notify("KHONG THANH CONG", "Key cua ban khong hop le.", 4483362458, 3.5)
+            end
+        else
+            mainWindow:Notify("THONG BAO", "Hay nhap key roi an nut XAC MINH", 4483362458, 3.5)
+        end
+    end)
     
-    local loadingBarCorner = Instance.new("UICorner")
-    loadingBarCorner.CornerRadius = UDim.new(0, 3)
-    loadingBarCorner.Parent = loadingBar
+    -- Các thành phần demo bổ sung (Toggle, Slider)
+    local autoToggle = mainWindow:CreateToggle("Auto Farm", false, function(value)
+        -- Callback khi toggle thay đổi
+    end)
     
-    local loadingProgress = Instance.new("Frame")
-    loadingProgress.Name = "Progress"
-    loadingProgress.Size = UDim2.new(0, 0, 1, 0)
-    loadingProgress.BackgroundColor3 = colors.primary
-    loadingProgress.BorderSizePixel = 0
-    loadingProgress.ZIndex = 152
-    loadingProgress.Parent = loadingBar
+    local speedSlider = mainWindow:CreateSlider("Toc Do", 1, 100, 50, function(value)
+        -- Callback khi slider thay đổi
+    end)
     
-    local progressCorner = Instance.new("UICorner")
-    progressCorner.CornerRadius = UDim.new(0, 3)
-    progressCorner.Parent = loadingProgress
+    -- Tạo thêm label hướng dẫn
+    mainWindow:CreateLabel("Luu y: Chi nhap key duoc cung cap tu Discord.")
     
     -- Hiệu ứng loading
-    CreateTween(loadingProgress, {Size = UDim2.new(1, 0, 1, 0)}, 2, Enum.EasingStyle.Quad):Play()
-    
-    task.delay(2, function()
-        CreateTween(loadingScreen, {BackgroundTransparency = 1}, 0.5):Play()
-        CreateTween(loadingText, {TextTransparency = 1}, 0.5):Play()
-        CreateTween(loadingSubText, {TextTransparency = 1}, 0.5):Play()
-        CreateTween(loadingBar, {BackgroundTransparency = 1}, 0.5):Play()
-        CreateTween(loadingProgress, {BackgroundTransparency = 1}, 0.5):Play()
+    local function ShowLoadingScreen()
+        local loadingScreen = Instance.new("Frame")
+        loadingScreen.Name = "LoadingScreen"
+        loadingScreen.Size = UDim2.new(1, 0, 1, 0)
+        loadingScreen.BackgroundColor3 = colors.background
+        loadingScreen.BackgroundTransparency = 0.2
+        loadingScreen.ZIndex = 150
+        loadingScreen.Parent = SGGui
         
-        task.delay(0.5, function()
-            loadingScreen:Destroy()
+        local loadingText = Instance.new("TextLabel")
+        loadingText.Name = "LoadingText"
+        loadingText.Size = UDim2.new(0, 300, 0, 30)
+        loadingText.Position = UDim2.new(0.5, -150, 0.5, -15)
+        loadingText.BackgroundTransparency = 1
+        loadingText.Text = "Loading ServiceGame"
+        loadingText.TextSize = 18
+        loadingText.Font = Enum.Font.GothamBold
+        loadingText.TextColor3 = colors.text
+        loadingText.ZIndex = 151
+        loadingText.Parent = loadingScreen
+        
+        local loadingSubText = Instance.new("TextLabel")
+        loadingSubText.Name = "LoadingSubText"
+        loadingSubText.Size = UDim2.new(0, 300, 0, 20)
+        loadingSubText.Position = UDim2.new(0.5, -150, 0.5, 15)
+        loadingSubText.BackgroundTransparency = 1
+        loadingSubText.Text = "by SG_TEAM"
+        loadingSubText.TextSize = 14
+        loadingSubText.Font = Enum.Font.Gotham
+        loadingSubText.TextColor3 = colors.text
+        loadingSubText.TextTransparency = 0.3
+        loadingSubText.ZIndex = 151
+        loadingSubText.Parent = loadingScreen
+        
+        local loadingBar = Instance.new("Frame")
+        loadingBar.Name = "LoadingBar"
+        loadingBar.Size = UDim2.new(0, 300, 0, 6)
+        loadingBar.Position = UDim2.new(0.5, -150, 0.5, 40)
+        loadingBar.BackgroundColor3 = colors.secondary
+        loadingBar.BorderSizePixel = 0
+        loadingBar.ZIndex = 151
+        loadingBar.Parent = loadingScreen
+        
+        local loadingBarCorner = Instance.new("UICorner")
+        loadingBarCorner.CornerRadius = UDim.new(0, 3)
+        loadingBarCorner.Parent = loadingBar
+        
+        local loadingProgress = Instance.new("Frame")
+        loadingProgress.Name = "Progress"
+        loadingProgress.Size = UDim2.new(0, 0, 1, 0)
+        loadingProgress.BackgroundColor3 = colors.primary
+        loadingProgress.BorderSizePixel = 0
+        loadingProgress.ZIndex = 152
+        loadingProgress.Parent = loadingBar
+        
+        local progressCorner = Instance.new("UICorner")
+        progressCorner.CornerRadius = UDim.new(0, 3)
+        progressCorner.Parent = loadingProgress
+        
+        -- Hiệu ứng loading
+        CreateTween(loadingProgress, {Size = UDim2.new(1, 0, 1, 0)}, 2, Enum.EasingStyle.Quad):Play()
+        
+        task.delay(2, function()
+            CreateTween(loadingScreen, {BackgroundTransparency = 1}, 0.5):Play()
+            CreateTween(loadingText, {TextTransparency = 1}, 0.5):Play()
+            CreateTween(loadingSubText, {TextTransparency = 1}, 0.5):Play()
+            CreateTween(loadingBar, {BackgroundTransparency = 1}, 0.5):Play()
+            CreateTween(loadingProgress, {BackgroundTransparency = 1}, 0.5):Play()
+            
+            task.delay(0.5, function()
+                loadingScreen:Destroy()
+            end)
         end)
-    end)
+    end
+    
+    ShowLoadingScreen()
+    
+    return mainWindow
 end
 
+SGLoginUI.CreateWindow = CreateWindow
+SGLoginUI.InitializeUI = InitializeUI
 
-KDZUI.CreateWindow = CreateWindow
-KDZUI.InitializeUI = InitializeUI
+local mainInterface = SGLoginUI.InitializeUI()
 
-local mainInterface = KDZUI.InitializeUI()
-return KDZUI
+return SGLoginUI
