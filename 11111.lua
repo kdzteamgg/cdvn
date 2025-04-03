@@ -477,7 +477,7 @@ local function CreateWindow(title)
         
         local textboxLabel = Instance.new("TextLabel")
         textboxLabel.Name = "Label"
-        textboxLabel.Size = UDim2.new(1, 0, 0, 20)
+        textboxLabel.Size = UDim2.new(1, 0, 0, 15)
         textboxLabel.BackgroundTransparency = 1
         textboxLabel.Text = text
         textboxLabel.TextSize = 14
@@ -746,7 +746,6 @@ end
 -- Khởi tạo giao diện người dùng
 local function InitializeUI()
     local mainWindow = CreateWindow("KDZ - LOGIN HACK")
-    mainWindow:CreateLabel("")
     local keyTextbox = mainWindow:CreateTextbox("KEY HERE:", "VD: SG_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", function(text)
         _G.EnteredKey = text
     end)
