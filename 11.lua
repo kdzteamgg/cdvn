@@ -688,7 +688,7 @@ local function CreateWindow(title)
         loadingSubText.Size = UDim2.new(0, 300, 0, 20)
         loadingSubText.Position = UDim2.new(0.5, -150, 0.5, 15)
         loadingSubText.BackgroundTransparency = 1
-        loadingSubText.Text = "loading..."
+        loadingSubText.Text = "loading... wait to open menu ><"
         loadingSubText.TextSize = 14
         loadingSubText.Font = Enum.Font.Gotham
         loadingSubText.TextColor3 = colors.text
