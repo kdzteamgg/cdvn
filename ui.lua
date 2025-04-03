@@ -1,31 +1,23 @@
+-- cc
 local KDZUI = {}
 
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local CoreGui = game:GetService("CoreGui")
 local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
-
-local player = Players.LocalPlayer
+local player = game:GetService("Players").LocalPlayer
 local mouse = player:GetMouse()
 
-local function CreateGui(name)
-    local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Name = name
-    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    ScreenGui.ResetOnSpawn = false
-    ScreenGui.DisplayOrder = 999
-    
-    if syn then
-        syn.protect_gui(ScreenGui)
-        ScreenGui.Parent = CoreGui
-    elseif gethui then
-        ScreenGui.Parent = gethui()
-    else
-        ScreenGui.Parent = CoreGui
-    end
-    
-    return ScreenGui
+local SGGui = Instance.new("ScreenGui")
+SGGui.Name = "KDZ Menu"
+SGGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+SGGui.ResetOnSpawn = false
+SGGui.DisplayOrder = 999
+if syn then
+    syn.protect_gui(SGGui)
+    SGGui.Parent = CoreGui
+else
+    SGGui.Parent = CoreGui
 end
 
 local colors = {
@@ -73,8 +65,7 @@ local function CreateIcon(parent, image, position, size)
     return icon
 end
 
-function KDZUI.CreateWindow(title, name)
-    local screenGui = CreateGui(name or "KDZUI")
+local function CreateWindow(title)
     local mainFrame = Instance.new("Frame")
     mainFrame.Name = "MainFrame"
     mainFrame.Size = UDim2.new(0, 400, 0, 300)
@@ -82,13 +73,11 @@ function KDZUI.CreateWindow(title, name)
     mainFrame.BackgroundColor3 = colors.background
     mainFrame.BorderSizePixel = 0
     mainFrame.ClipsDescendants = true
-    mainFrame.Parent = screenGui
+    mainFrame.Parent = SGGui
     mainFrame.ZIndex = 10
-    
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, 8)
     corner.Parent = mainFrame
-    
     CreateShadow(mainFrame, 0.5)
     
     local titleBar = Instance.new("Frame")
@@ -103,7 +92,7 @@ function KDZUI.CreateWindow(title, name)
     local titleCorner = Instance.new("UICorner")
     titleCorner.CornerRadius = UDim.new(0, 8)
     titleCorner.Parent = titleBar
-    
+
     local titleBottomBar = Instance.new("Frame")
     titleBottomBar.Name = "TitleBottomCover"
     titleBottomBar.Size = UDim2.new(1, 0, 0, 10)
@@ -112,20 +101,20 @@ function KDZUI.CreateWindow(title, name)
     titleBottomBar.BorderSizePixel = 0
     titleBottomBar.ZIndex = 11
     titleBottomBar.Parent = titleBar
-    
+
     local titleText = Instance.new("TextLabel")
     titleText.Name = "Title"
     titleText.Size = UDim2.new(1, -20, 1, 0)
     titleText.Position = UDim2.new(0, 10, 0, 0)
     titleText.BackgroundTransparency = 1
-    titleText.Text = title or "UI Library"
+    titleText.Text = title
     titleText.TextSize = 18
     titleText.Font = Enum.Font.GothamBold
     titleText.TextColor3 = colors.text
     titleText.TextXAlignment = Enum.TextXAlignment.Center
     titleText.ZIndex = 12
     titleText.Parent = titleBar
-    
+
     local closeButton = Instance.new("TextButton")
     closeButton.Name = "CloseButton"
     closeButton.Size = UDim2.new(0, 30, 0, 30)
@@ -142,9 +131,9 @@ function KDZUI.CreateWindow(title, name)
         local closeTween = CreateTween(mainFrame, {Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0.5, 0, 0.5, 0)}, 0.5)
         closeTween:Play()
         closeTween.Completed:Wait()
-        screenGui:Destroy()
+        SGGui:Destroy()
     end)
-    
+
     local contentFrame = Instance.new("ScrollingFrame")
     contentFrame.Name = "Content"
     contentFrame.Size = UDim2.new(1, -20, 1, -60)
@@ -164,12 +153,12 @@ function KDZUI.CreateWindow(title, name)
     contentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
         contentFrame.CanvasSize = UDim2.new(0, 0, 0, contentLayout.AbsoluteContentSize.Y + 10)
     end)
-
+    
     mainFrame.Size = UDim2.new(0, 0, 0, 0)
     mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
     local openTween = CreateTween(mainFrame, {Size = UDim2.new(0, 400, 0, 300), Position = UDim2.new(0.5, -200, 0.5, -150)}, 0.5)
     openTween:Play()
-    
+
     local dragging, dragInput, dragStart, startPos
     
     local function updateDrag(input)
@@ -205,8 +194,7 @@ function KDZUI.CreateWindow(title, name)
     local window = {}
     window.ContentFrame = contentFrame
     window.MainFrame = mainFrame
-    window.ScreenGui = screenGui
-    
+
     function window:CreateLabel(text)
         local label = Instance.new("TextLabel")
         label.Name = "Label"
@@ -246,7 +234,7 @@ function KDZUI.CreateWindow(title, name)
         local buttonCorner = Instance.new("UICorner")
         buttonCorner.CornerRadius = UDim.new(0, 6)
         buttonCorner.Parent = button
-        
+
         button.MouseEnter:Connect(function()
             CreateTween(button, {BackgroundColor3 = Color3.fromRGB(70, 130, 220)}, 0.2):Play()
         end)
@@ -254,7 +242,7 @@ function KDZUI.CreateWindow(title, name)
         button.MouseLeave:Connect(function()
             CreateTween(button, {BackgroundColor3 = colors.primary}, 0.2):Play()
         end)
-        
+
         button.MouseButton1Down:Connect(function()
             CreateTween(button, {BackgroundColor3 = Color3.fromRGB(50, 100, 180)}, 0.1):Play()
         end)
@@ -262,7 +250,7 @@ function KDZUI.CreateWindow(title, name)
         button.MouseButton1Up:Connect(function()
             CreateTween(button, {BackgroundColor3 = Color3.fromRGB(70, 130, 220)}, 0.1):Play()
         end)
-        
+
         button.MouseButton1Click:Connect(function()
             if callback then
                 callback()
@@ -271,7 +259,7 @@ function KDZUI.CreateWindow(title, name)
         
         return button
     end
-    
+
     function window:CreateToggle(text, default, callback)
         local toggleFrame = Instance.new("Frame")
         toggleFrame.Name = "ToggleFrame"
@@ -351,7 +339,7 @@ function KDZUI.CreateWindow(title, name)
             end
         }
     end
-    
+
     function window:CreateSlider(text, min, max, default, callback)
         local sliderFrame = Instance.new("Frame")
         sliderFrame.Name = "SliderFrame"
@@ -492,7 +480,7 @@ function KDZUI.CreateWindow(title, name)
             end
         }
     end
-    
+
     function window:CreateTextbox(text, placeholder, callback)
         local textboxFrame = Instance.new("Frame")
         textboxFrame.Name = "TextboxFrame"
@@ -541,7 +529,7 @@ function KDZUI.CreateWindow(title, name)
         textbox.ClearTextOnFocus = false
         textbox.ZIndex = 13
         textbox.Parent = textboxContainer
-        
+
         textbox.Focused:Connect(function()
             CreateTween(textboxContainer, {BackgroundColor3 = Color3.fromRGB(60, 60, 80)}, 0.2):Play()
         end)
@@ -564,7 +552,7 @@ function KDZUI.CreateWindow(title, name)
             end
         }
     end
-    
+
     function window:Notify(title, content, image, duration)
         duration = duration or 3
         
@@ -575,7 +563,7 @@ function KDZUI.CreateWindow(title, name)
         notifyFrame.BackgroundColor3 = colors.background
         notifyFrame.BorderSizePixel = 0
         notifyFrame.ZIndex = 100
-        notifyFrame.Parent = screenGui
+        notifyFrame.Parent = SGGui
         
         local notifyCorner = Instance.new("UICorner")
         notifyCorner.CornerRadius = UDim.new(0, 8)
@@ -632,379 +620,79 @@ function KDZUI.CreateWindow(title, name)
         end)
     end
     
-    function window:SetTheme(newColors)
-        for key, value in pairs(newColors) do
-            if colors[key] then
-                colors[key] = value
-            end
-        end
-    end
-    
-    function window:ShowLoadingScreen(text, subText, duration)
-        duration = duration or 2
-        
+    local function ShowLoadingScreen()
         local loadingScreen = Instance.new("Frame")
         loadingScreen.Name = "LoadingScreen"
         loadingScreen.Size = UDim2.new(1, 0, 1, 0)
         loadingScreen.BackgroundColor3 = colors.background
         loadingScreen.BackgroundTransparency = 0.2
         loadingScreen.ZIndex = 150
-        loadingScreen.Parent = screenGui
+        loadingScreen.Parent = SGGui
         
         local loadingText = Instance.new("TextLabel")
         loadingText.Name = "LoadingText"
         loadingText.Size = UDim2.new(0, 300, 0, 30)
         loadingText.Position = UDim2.new(0.5, -150, 0.5, -15)
         loadingText.BackgroundTransparency = 1
-loadingText.Text = text or "Loading..."
-loadingText.TextSize = 24
-loadingText.Font = Enum.Font.GothamBold
-loadingText.TextColor3 = colors.text
-loadingText.ZIndex = 151
-loadingText.Parent = loadingScreen
-
-local loadingSubText = Instance.new("TextLabel")
-loadingSubText.Name = "LoadingSubText"
-loadingSubText.Size = UDim2.new(0, 300, 0, 20)
-loadingSubText.Position = UDim2.new(0.5, -150, 0.5, 20)
-loadingSubText.BackgroundTransparency = 1
-loadingSubText.Text = subText or "Please wait"
-loadingSubText.TextSize = 16
-loadingSubText.Font = Enum.Font.Gotham
-loadingSubText.TextColor3 = colors.text
-loadingSubText.TextTransparency = 0.2
-loadingSubText.ZIndex = 151
-loadingSubText.Parent = loadingScreen
-
-local spinner = Instance.new("Frame")
-spinner.Name = "Spinner"
-spinner.Size = UDim2.new(0, 40, 0, 40)
-spinner.Position = UDim2.new(0.5, -20, 0.5, -60)
-spinner.BackgroundTransparency = 1
-spinner.ZIndex = 151
-spinner.Parent = loadingScreen
-
-for i = 1, 8 do
-    local dot = Instance.new("Frame")
-    dot.Name = "Dot" .. i
-    dot.Size = UDim2.new(0, 8, 0, 8)
-    dot.AnchorPoint = Vector2.new(0.5, 0.5)
-    dot.Position = UDim2.new(0.5, math.cos(math.rad(i * 45 - 45)) * 15, 0.5, math.sin(math.rad(i * 45 - 45)) * 15)
-    dot.BackgroundColor3 = colors.primary
-    dot.BackgroundTransparency = 0.5 + (i * 0.05)
-    dot.ZIndex = 152
-    dot.Parent = spinner
-    
-    local dotCorner = Instance.new("UICorner")
-    dotCorner.CornerRadius = UDim.new(1, 0)
-    dotCorner.Parent = dot
-end
-
-local spinnerConnection = nil
-spinnerConnection = RunService.Heartbeat:Connect(function()
-    if spinner and spinner.Parent then
-        spinner.Rotation = (spinner.Rotation + 2) % 360
-    else
-        if spinnerConnection then
-            spinnerConnection:Disconnect()
-        end
-    end
-end)
-
-task.delay(duration, function()
-    local fadeOutTween = CreateTween(loadingScreen, {BackgroundTransparency = 1}, 0.5)
-    fadeOutTween:Play()
-    
-    for _, child in pairs(loadingScreen:GetDescendants()) do
-        if child:IsA("TextLabel") then
-            CreateTween(child, {TextTransparency = 1}, 0.5):Play()
-        elseif child:IsA("Frame") and child.Name:match("^Dot") then
-            CreateTween(child, {BackgroundTransparency = 1}, 0.5):Play()
-        end
-    end
-    
-    fadeOutTween.Completed:Wait()
-    if spinnerConnection then
-        spinnerConnection:Disconnect()
-    end
-    loadingScreen:Destroy()
-end)
-end
-
-
-function window:CreateSection(title)
-    local sectionFrame = Instance.new("Frame")
-    sectionFrame.Name = "Section"
-    sectionFrame.Size = UDim2.new(1, -20, 0, 30)
-    sectionFrame.BackgroundTransparency = 1
-    sectionFrame.ZIndex = 11
-    sectionFrame.Parent = contentFrame
-    
-    local sectionTitle = Instance.new("TextLabel")
-    sectionTitle.Name = "Title"
-    sectionTitle.Size = UDim2.new(1, 0, 1, 0)
-    sectionTitle.BackgroundTransparency = 1
-    sectionTitle.Text = title
-    sectionTitle.TextSize = 16
-    sectionTitle.Font = Enum.Font.GothamBold
-    sectionTitle.TextColor3 = colors.primary
-    sectionTitle.TextXAlignment = Enum.TextXAlignment.Left
-    sectionTitle.ZIndex = 12
-    sectionTitle.Parent = sectionFrame
-    
-    return sectionFrame
-end
-
-function window:CreateDropdown(text, options, default, callback)
-    local dropdownFrame = Instance.new("Frame")
-    dropdownFrame.Name = "DropdownFrame"
-    dropdownFrame.Size = UDim2.new(1, -20, 0, 50)
-    dropdownFrame.BackgroundTransparency = 1
-    dropdownFrame.ZIndex = 11
-    dropdownFrame.Parent = contentFrame
-    
-    local dropdownLabel = Instance.new("TextLabel")
-    dropdownLabel.Name = "Label"
-    dropdownLabel.Size = UDim2.new(1, 0, 0, 20)
-    dropdownLabel.BackgroundTransparency = 1
-    dropdownLabel.Text = text
-    dropdownLabel.TextSize = 14
-    dropdownLabel.Font = Enum.Font.Gotham
-    dropdownLabel.TextColor3 = colors.text
-    dropdownLabel.TextXAlignment = Enum.TextXAlignment.Left
-    dropdownLabel.ZIndex = 12
-    dropdownLabel.Parent = dropdownFrame
-    
-    local dropdownButton = Instance.new("TextButton")
-    dropdownButton.Name = "Button"
-    dropdownButton.Size = UDim2.new(1, 0, 0, 30)
-    dropdownButton.Position = UDim2.new(0, 0, 0, 20)
-    dropdownButton.BackgroundColor3 = colors.secondary
-    dropdownButton.BorderSizePixel = 0
-    dropdownButton.Text = ""
-    dropdownButton.ZIndex = 12
-    dropdownButton.Parent = dropdownFrame
-    
-    local dropdownCorner = Instance.new("UICorner")
-    dropdownCorner.CornerRadius = UDim.new(0, 6)
-    dropdownCorner.Parent = dropdownButton
-    
-    local selectedText = Instance.new("TextLabel")
-    selectedText.Name = "SelectedText"
-    selectedText.Size = UDim2.new(1, -35, 1, 0)
-    selectedText.Position = UDim2.new(0, 10, 0, 0)
-    selectedText.BackgroundTransparency = 1
-    selectedText.Text = default or options[1] or "Select..."
-    selectedText.TextSize = 14
-    selectedText.Font = Enum.Font.Gotham
-    selectedText.TextColor3 = colors.text
-    selectedText.TextXAlignment = Enum.TextXAlignment.Left
-    selectedText.ZIndex = 13
-    selectedText.Parent = dropdownButton
-    
-    local dropdownArrow = Instance.new("TextLabel")
-    dropdownArrow.Name = "Arrow"
-    dropdownArrow.Size = UDim2.new(0, 20, 0, 20)
-    dropdownArrow.Position = UDim2.new(1, -25, 0.5, -10)
-    dropdownArrow.BackgroundTransparency = 1
-    dropdownArrow.Text = "▼"
-    dropdownArrow.TextSize = 14
-    dropdownArrow.Font = Enum.Font.Gotham
-    dropdownArrow.TextColor3 = colors.text
-    dropdownArrow.ZIndex = 13
-    dropdownArrow.Parent = dropdownButton
-    
-    local dropdownContainer = Instance.new("Frame")
-    dropdownContainer.Name = "DropdownContainer"
-    dropdownContainer.Size = UDim2.new(1, 0, 0, 0)
-    dropdownContainer.Position = UDim2.new(0, 0, 1, 5)
-    dropdownContainer.BackgroundColor3 = colors.background
-    dropdownContainer.BorderSizePixel = 0
-    dropdownContainer.ClipsDescendants = true
-    dropdownContainer.Visible = false
-    dropdownContainer.ZIndex = 50
-    dropdownContainer.Parent = dropdownButton
-    
-    local containerCorner = Instance.new("UICorner")
-    containerCorner.CornerRadius = UDim.new(0, 6)
-    containerCorner.Parent = dropdownContainer
-    
-    local optionsList = Instance.new("ScrollingFrame")
-    optionsList.Name = "OptionsList"
-    optionsList.Size = UDim2.new(1, 0, 1, 0)
-    optionsList.BackgroundTransparency = 1
-    optionsList.ScrollBarThickness = 2
-    optionsList.ScrollingDirection = Enum.ScrollingDirection.Y
-    optionsList.ZIndex = 51
-    optionsList.Parent = dropdownContainer
-    
-    local optionsLayout = Instance.new("UIListLayout")
-    optionsLayout.Padding = UDim.new(0, 5)
-    optionsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-    optionsLayout.Parent = optionsList
-    
-    local optionsConstraint = Instance.new("UIPadding")
-    optionsConstraint.PaddingLeft = UDim.new(0, 5)
-    optionsConstraint.PaddingRight = UDim.new(0, 5)
-    optionsConstraint.PaddingTop = UDim.new(0, 5)
-    optionsConstraint.PaddingBottom = UDim.new(0, 5)
-    optionsConstraint.Parent = optionsList
-    
-    local totalHeight = 10
-    for _, option in ipairs(options) do
-        local optionButton = Instance.new("TextButton")
-        optionButton.Name = "Option"
-        optionButton.Size = UDim2.new(1, -10, 0, 25)
-        optionButton.BackgroundColor3 = colors.secondary
-        optionButton.BorderSizePixel = 0
-        optionButton.Text = option
-        optionButton.TextSize = 14
-        optionButton.Font = Enum.Font.Gotham
-        optionButton.TextColor3 = colors.text
-        optionButton.ZIndex = 52
-        optionButton.Parent = optionsList
+        loadingText.Text = "HI! I AM KDZ"
+        loadingText.TextSize = 18
+        loadingText.Font = Enum.Font.GothamBold
+        loadingText.TextColor3 = colors.text
+        loadingText.ZIndex = 151
+        loadingText.Parent = loadingScreen
         
-        local optionCorner = Instance.new("UICorner")
-        optionCorner.CornerRadius = UDim.new(0, 4)
-        optionCorner.Parent = optionButton
+        local loadingSubText = Instance.new("TextLabel")
+        loadingSubText.Name = "LoadingSubText"
+        loadingSubText.Size = UDim2.new(0, 300, 0, 20)
+        loadingSubText.Position = UDim2.new(0.5, -150, 0.5, 15)
+        loadingSubText.BackgroundTransparency = 1
+        loadingSubText.Text = "script loading..."
+        loadingSubText.TextSize = 14
+        loadingSubText.Font = Enum.Font.Gotham
+        loadingSubText.TextColor3 = colors.text
+        loadingSubText.TextTransparency = 0.3
+        loadingSubText.ZIndex = 151
+        loadingSubText.Parent = loadingScreen
         
-        optionButton.MouseEnter:Connect(function()
-            CreateTween(optionButton, {BackgroundColor3 = colors.primary}, 0.2):Play()
-        end)
+        local loadingBar = Instance.new("Frame")
+        loadingBar.Name = "LoadingBar"
+        loadingBar.Size = UDim2.new(0, 300, 0, 6)
+        loadingBar.Position = UDim2.new(0.5, -150, 0.5, 40)
+        loadingBar.BackgroundColor3 = colors.secondary
+        loadingBar.BorderSizePixel = 0
+        loadingBar.ZIndex = 151
+        loadingBar.Parent = loadingScreen
         
-        optionButton.MouseLeave:Connect(function()
-            CreateTween(optionButton, {BackgroundColor3 = colors.secondary}, 0.2):Play()
-        end)
+        local loadingBarCorner = Instance.new("UICorner")
+        loadingBarCorner.CornerRadius = UDim.new(0, 3)
+        loadingBarCorner.Parent = loadingBar
         
-        optionButton.MouseButton1Click:Connect(function()
-            selectedText.Text = option
-            CreateTween(dropdownContainer, {Size = UDim2.new(1, 0, 0, 0)}, 0.2):Play()
+        local loadingProgress = Instance.new("Frame")
+        loadingProgress.Name = "Progress"
+        loadingProgress.Size = UDim2.new(0, 0, 1, 0)
+        loadingProgress.BackgroundColor3 = colors.primary
+        loadingProgress.BorderSizePixel = 0
+        loadingProgress.ZIndex = 152
+        loadingProgress.Parent = loadingBar
+        
+        local progressCorner = Instance.new("UICorner")
+        progressCorner.CornerRadius = UDim.new(0, 3)
+        progressCorner.Parent = loadingProgress
+        
+        CreateTween(loadingProgress, {Size = UDim2.new(1, 0, 1, 0)}, 2, Enum.EasingStyle.Quad):Play()
+        
+        task.delay(2, function()
+            CreateTween(loadingScreen, {BackgroundTransparency = 1}, 0.5):Play()
+            CreateTween(loadingText, {TextTransparency = 1}, 0.5):Play()
+            CreateTween(loadingSubText, {TextTransparency = 1}, 0.5):Play()
+            CreateTween(loadingBar, {BackgroundTransparency = 1}, 0.5):Play()
+            CreateTween(loadingProgress, {BackgroundTransparency = 1}, 0.5):Play()
             
-            task.delay(0.2, function()
-                dropdownContainer.Visible = false
-                dropdownArrow.Text = "▼"
+            task.delay(0.5, function()
+                loadingScreen:Destroy()
             end)
-            
-            if callback then
-                callback(option)
-            end
         end)
-        
-        totalHeight = totalHeight + 30
     end
-    
-    totalHeight = math.min(totalHeight, 150)
-    
-    local isOpen = false
-    dropdownButton.MouseButton1Click:Connect(function()
-        isOpen = not isOpen
-        
-        if isOpen then
-            dropdownContainer.Visible = true
-            dropdownArrow.Text = "▲"
 
-            optionsList.CanvasSize = UDim2.new(0, 0, 0, optionsLayout.AbsoluteContentSize.Y + 10)
-            
-            CreateTween(dropdownContainer, {Size = UDim2.new(1, 0, 0, totalHeight)}, 0.2):Play()
-        else
-            dropdownArrow.Text = "▼"
-            CreateTween(dropdownContainer, {Size = UDim2.new(1, 0, 0, 0)}, 0.2):Play()
-            
-            task.delay(0.2, function()
-                dropdownContainer.Visible = false
-            end)
-        end
-    end)
-    
-    UserInputService.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 and isOpen then
-            local mousePos = UserInputService:GetMouseLocation()
-            local dropdownPos = dropdownContainer.AbsolutePosition
-            local dropdownSize = dropdownContainer.AbsoluteSize
-            
-            if mousePos.X < dropdownPos.X or mousePos.X > dropdownPos.X + dropdownSize.X or
-               mousePos.Y < dropdownPos.Y or mousePos.Y > dropdownPos.Y + dropdownSize.Y then
-                isOpen = false
-                dropdownArrow.Text = "▼"
-                CreateTween(dropdownContainer, {Size = UDim2.new(1, 0, 0, 0)}, 0.2):Play()
-                
-                task.delay(0.2, function()
-                    dropdownContainer.Visible = false
-                end)
-            end
-        end
-    end)
-    
-    CreateShadow(dropdownContainer, 0.4)
-    
-    return {
-        Frame = dropdownFrame,
-        Set = function(option)
-            selectedText.Text = option
-            if callback then
-                callback(option)
-            end
-        end,
-        Get = function()
-            return selectedText.Text
-        end,
-        SetOptions = function(newOptions)
-            for _, child in ipairs(optionsList:GetChildren()) do
-                if child:IsA("TextButton") then
-                    child:Destroy()
-                end
-            end
-            
-            local totalHeight = 10
-            for _, option in ipairs(newOptions) do
-                local optionButton = Instance.new("TextButton")
-                optionButton.Name = "Option"
-                optionButton.Size = UDim2.new(1, -10, 0, 25)
-                optionButton.BackgroundColor3 = colors.secondary
-                optionButton.BorderSizePixel = 0
-                optionButton.Text = option
-                optionButton.TextSize = 14
-                optionButton.Font = Enum.Font.Gotham
-                optionButton.TextColor3 = colors.text
-                optionButton.ZIndex = 52
-                optionButton.Parent = optionsList
-                
-                local optionCorner = Instance.new("UICorner")
-                optionCorner.CornerRadius = UDim.new(0, 4)
-                optionCorner.Parent = optionButton
-                
-                optionButton.MouseEnter:Connect(function()
-                    CreateTween(optionButton, {BackgroundColor3 = colors.primary}, 0.2):Play()
-                end)
-                
-                optionButton.MouseLeave:Connect(function()
-                    CreateTween(optionButton, {BackgroundColor3 = colors.secondary}, 0.2):Play()
-                end)
-                
-                optionButton.MouseButton1Click:Connect(function()
-                    selectedText.Text = option
-                    CreateTween(dropdownContainer, {Size = UDim2.new(1, 0, 0, 0)}, 0.2):Play()
-                    
-                    task.delay(0.2, function()
-                        dropdownContainer.Visible = false
-                        dropdownArrow.Text = "▼"
-                    end)
-                    
-                    if callback then
-                        callback(option)
-                    end
-                end)
-                
-                totalHeight = totalHeight + 30
-            end
-            
-            totalHeight = math.min(totalHeight, 150)
-            optionsList.CanvasSize = UDim2.new(0, 0, 0, optionsLayout.AbsoluteContentSize.Y + 10)
-        end
-    }
+    return window
 end
-
-return window
-end
-
-return KDZUI
