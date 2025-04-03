@@ -747,15 +747,19 @@ end
 local function InitializeUI()
     -- Khởi tạo window
     local mainWindow = CreateWindow("KDZ - LOGIN HACK")
-
-local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
-    _G.EnteredKey = text
-end)
     
-    -- Tạo label thông tin
+    -- Tạo label thông tin FIRST
     mainWindow:CreateLabel("[+] https://discord.com/invite/gtQ54c43G3")
-
-    -- Tạo button xác nhận
+    
+    -- Tạo textbox SECOND
+    local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
+        _G.EnteredKey = text
+    end)
+    
+    -- Tạo label thông tin THIRD
+    mainWindow:CreateLabel("NEU BAN CHUA CO KEY? MUA KEY TAI @KDZ.")
+    
+    -- Tạo button xác nhận LAST - this will make it appear at the bottom
     local verifyButton = mainWindow:CreateButton("====== XAC NHAN KEY HACK ======", function()
         if _G.EnteredKey and _G.EnteredKey ~= "" then
             local response = KeyGuardLibrary.validateDefaultKey(_G.EnteredKey)
@@ -772,7 +776,6 @@ end)
             mainWindow:Notify("THONG BAO", "Hay nhap key roi an nut XAC MINH", 4483362458, 3.5)
         end
     end)
-    mainWindow:CreateLabel("NEU BAN CHUA CO KEY? MUA KEY TAI @KDZ.")
     
     return mainWindow
 end
