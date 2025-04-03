@@ -493,10 +493,16 @@ end
 -- Initialize user interface
 local function InitializeUI()
     local mainWindow = CreateWindow("KDZ - LOGIN HACK")
+    
+    -- Create labels with proper spacing
     mainWindow:CreateLabel("PASTE KEY DE XAC NHAN TU DONG:")
-    local keyTextbox = mainWindow:CreateTextbox("KEY HERE:", "VD: SG_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+    
+    -- Create textbox with clear label and placeholder
+    local keyTextbox = mainWindow:CreateTextbox("", "VD: SG_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+    
+    -- Create instruction label with spacing
     mainWindow:CreateLabel("Tu dong check khi paste key hop le!")
-
+    
     -- Initial notification to guide the user
     task.delay(3, function()
         mainWindow:Notify("THONG BAO", "Hay paste key vao o tren de tu dong xac thuc", 4483362458, 4)
