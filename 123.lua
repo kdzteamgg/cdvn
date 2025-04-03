@@ -43,6 +43,82 @@ local colors = {
     warning = Color3.fromRGB(255, 193, 7)
 }
 
+-- Hiệu ứng loading
+local function ShowLoadingScreen()
+    local loadingScreen = Instance.new("Frame")
+    loadingScreen.Name = "LoadingScreen"
+    loadingScreen.Size = UDim2.new(1, 0, 1, 0)
+    loadingScreen.BackgroundColor3 = colors.background
+    loadingScreen.BackgroundTransparency = 0.2
+    loadingScreen.ZIndex = 150
+    loadingScreen.Parent = SGGui
+    
+    local loadingText = Instance.new("TextLabel")
+    loadingText.Name = "LoadingText"
+    loadingText.Size = UDim2.new(0, 300, 0, 30)
+    loadingText.Position = UDim2.new(0.5, -150, 0.5, -15)
+    loadingText.BackgroundTransparency = 1
+    loadingText.Text = "KDZ - CHOI GAME LA PHAI CH4AT!"
+    loadingText.TextSize = 18
+    loadingText.Font = Enum.Font.GothamBold
+    loadingText.TextColor3 = colors.text
+    loadingText.ZIndex = 151
+    loadingText.Parent = loadingScreen
+    
+    local loadingSubText = Instance.new("TextLabel")
+    loadingSubText.Name = "LoadingSubText"
+    loadingSubText.Size = UDim2.new(0, 300, 0, 20)
+    loadingSubText.Position = UDim2.new(0.5, -150, 0.5, 15)
+    loadingSubText.BackgroundTransparency = 1
+    loadingSubText.Text = "loading..."
+    loadingSubText.TextSize = 14
+    loadingSubText.Font = Enum.Font.Gotham
+    loadingSubText.TextColor3 = colors.text
+    loadingSubText.TextTransparency = 0.3
+    loadingSubText.ZIndex = 151
+    loadingSubText.Parent = loadingScreen
+    
+    local loadingBar = Instance.new("Frame")
+    loadingBar.Name = "LoadingBar"
+    loadingBar.Size = UDim2.new(0, 300, 0, 6)
+    loadingBar.Position = UDim2.new(0.5, -150, 0.5, 40)
+    loadingBar.BackgroundColor3 = colors.secondary
+    loadingBar.BorderSizePixel = 0
+    loadingBar.ZIndex = 151
+    loadingBar.Parent = loadingScreen
+    
+    local loadingBarCorner = Instance.new("UICorner")
+    loadingBarCorner.CornerRadius = UDim.new(0, 3)
+    loadingBarCorner.Parent = loadingBar
+    
+    local loadingProgress = Instance.new("Frame")
+    loadingProgress.Name = "Progress"
+    loadingProgress.Size = UDim2.new(0, 0, 1, 0)
+    loadingProgress.BackgroundColor3 = colors.primary
+    loadingProgress.BorderSizePixel = 0
+    loadingProgress.ZIndex = 152
+    loadingProgress.Parent = loadingBar
+    
+    local progressCorner = Instance.new("UICorner")
+    progressCorner.CornerRadius = UDim.new(0, 3)
+    progressCorner.Parent = loadingProgress
+    
+    -- Hiệu ứng loading
+    CreateTween(loadingProgress, {Size = UDim2.new(1, 0, 1, 0)}, 2, Enum.EasingStyle.Quad):Play()
+    
+    task.delay(2, function()
+        CreateTween(loadingScreen, {BackgroundTransparency = 1}, 0.5):Play()
+        CreateTween(loadingText, {TextTransparency = 1}, 0.5):Play()
+        CreateTween(loadingSubText, {TextTransparency = 1}, 0.5):Play()
+        CreateTween(loadingBar, {BackgroundTransparency = 1}, 0.5):Play()
+        CreateTween(loadingProgress, {BackgroundTransparency = 1}, 0.5):Play()
+        
+        task.delay(0.5, function()
+            loadingScreen:Destroy()
+        end)
+    end)
+end
+
 -- Hiệu ứng shadow
 local function CreateShadow(frame, intensity)
     local shadow = Instance.new("ImageLabel")
@@ -83,7 +159,6 @@ end
 
 -- Tạo cửa sổ chính
 local function CreateWindow(title)
-    wait(2)
     -- Container chính
     local mainFrame = Instance.new("Frame")
     mainFrame.Name = "MainFrame"
@@ -160,17 +235,7 @@ local function CreateWindow(title)
         closeTween.Completed:Wait()
         SGGui:Destroy()
     end)
-
-    function exit()
-        if InitializeUI then
-            local closeTween = CreateTween(mainFrame, {Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0.5, 0, 0.5, 0)}, 0.5)
-            closeTween:Play()
-            closeTween.Completed:Wait()
-        end
-    end
-
     
-    -- Nội dung chính
     local contentFrame = Instance.new("ScrollingFrame")
     contentFrame.Name = "Content"
     contentFrame.Size = UDim2.new(1, -20, 1, -60)
@@ -671,82 +736,6 @@ local function CreateWindow(title)
         
         return button
     end
-
-    -- Hiệu ứng loading
-    local function ShowLoadingScreen()
-        local loadingScreen = Instance.new("Frame")
-        loadingScreen.Name = "LoadingScreen"
-        loadingScreen.Size = UDim2.new(1, 0, 1, 0)
-        loadingScreen.BackgroundColor3 = colors.background
-        loadingScreen.BackgroundTransparency = 0.2
-        loadingScreen.ZIndex = 150
-        loadingScreen.Parent = SGGui
-        
-        local loadingText = Instance.new("TextLabel")
-        loadingText.Name = "LoadingText"
-        loadingText.Size = UDim2.new(0, 300, 0, 30)
-        loadingText.Position = UDim2.new(0.5, -150, 0.5, -15)
-        loadingText.BackgroundTransparency = 1
-        loadingText.Text = "KDZ - CHOI GAME LA PHAI CH4AT!"
-        loadingText.TextSize = 18
-        loadingText.Font = Enum.Font.GothamBold
-        loadingText.TextColor3 = colors.text
-        loadingText.ZIndex = 151
-        loadingText.Parent = loadingScreen
-        
-        local loadingSubText = Instance.new("TextLabel")
-        loadingSubText.Name = "LoadingSubText"
-        loadingSubText.Size = UDim2.new(0, 300, 0, 20)
-        loadingSubText.Position = UDim2.new(0.5, -150, 0.5, 15)
-        loadingSubText.BackgroundTransparency = 1
-        loadingSubText.Text = "loading..."
-        loadingSubText.TextSize = 14
-        loadingSubText.Font = Enum.Font.Gotham
-        loadingSubText.TextColor3 = colors.text
-        loadingSubText.TextTransparency = 0.3
-        loadingSubText.ZIndex = 151
-        loadingSubText.Parent = loadingScreen
-        
-        local loadingBar = Instance.new("Frame")
-        loadingBar.Name = "LoadingBar"
-        loadingBar.Size = UDim2.new(0, 300, 0, 6)
-        loadingBar.Position = UDim2.new(0.5, -150, 0.5, 40)
-        loadingBar.BackgroundColor3 = colors.secondary
-        loadingBar.BorderSizePixel = 0
-        loadingBar.ZIndex = 151
-        loadingBar.Parent = loadingScreen
-        
-        local loadingBarCorner = Instance.new("UICorner")
-        loadingBarCorner.CornerRadius = UDim.new(0, 3)
-        loadingBarCorner.Parent = loadingBar
-        
-        local loadingProgress = Instance.new("Frame")
-        loadingProgress.Name = "Progress"
-        loadingProgress.Size = UDim2.new(0, 0, 1, 0)
-        loadingProgress.BackgroundColor3 = colors.primary
-        loadingProgress.BorderSizePixel = 0
-        loadingProgress.ZIndex = 152
-        loadingProgress.Parent = loadingBar
-        
-        local progressCorner = Instance.new("UICorner")
-        progressCorner.CornerRadius = UDim.new(0, 3)
-        progressCorner.Parent = loadingProgress
-        
-        -- Hiệu ứng loading
-        CreateTween(loadingProgress, {Size = UDim2.new(1, 0, 1, 0)}, 2, Enum.EasingStyle.Quad):Play()
-        
-        task.delay(2, function()
-            CreateTween(loadingScreen, {BackgroundTransparency = 1}, 0.5):Play()
-            CreateTween(loadingText, {TextTransparency = 1}, 0.5):Play()
-            CreateTween(loadingSubText, {TextTransparency = 1}, 0.5):Play()
-            CreateTween(loadingBar, {BackgroundTransparency = 1}, 0.5):Play()
-            CreateTween(loadingProgress, {BackgroundTransparency = 1}, 0.5):Play()
-            
-            task.delay(0.5, function()
-                loadingScreen:Destroy()
-            end)
-        end)
-    end
     
     ShowLoadingScreen()
     wait(2)
@@ -772,7 +761,6 @@ end)
             
             if response == trueData then
                 mainWindow:Notify("THANH CONG !!!", "LOAD SCRIPT CDVN - DEV BY KDZ...", 4483362458, 3.5)
-                exit()
                 LoadMainScript()
             else
                 mainWindow:Notify("KHONG THANH CONG", "Key cua ban khong hop le.", 4483362458, 3.5)
