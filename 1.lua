@@ -746,8 +746,8 @@ end
 -- Khởi tạo giao diện người dùng
 local function InitializeUI()
     local mainWindow = CreateWindow("KDZ - LOGIN HACK")
-    -- Create the key textbox
-    local keyTextbox = mainWindow:CreateTextbox("KEY:", "NHAP KEY TAI DAY...", function(text)
+    mainWindow:CreateLabel("")
+    local keyTextbox = mainWindow:CreateTextbox("KEY HERE:", "VD: SG_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", function(text)
         _G.EnteredKey = text
     end)
     
