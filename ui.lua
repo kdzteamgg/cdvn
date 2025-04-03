@@ -1,4 +1,4 @@
---
+-- cddddddd
 local KeyGuardLibrary = loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
 local trueData = "32a8738d7e644ad2b469d530b6943449"
 local falseData = "6335f41a8d1a475fb973d0bbfe0f20f7"
@@ -685,12 +685,9 @@ local function InitializeUI()
             
             if response == trueData then
                 mainWindow:Notify("THANH CONG !!!", "LOAD SCRIPT CDVN - DEV BY KDZ...", 4483362458, 3.5)
-                closeButton.MouseButton1Click:Connect(function()
-                    local closeTween = CreateTween(mainFrame, {Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0.5, 0, 0.5, 0)}, 0.5)
-                    closeTween:Play()
-                    closeTween.Completed:Wait()
-                    SGGui:Destroy()
-                end)
+                closeTween:Play()
+                closeTween.Completed:Wait()
+                SGGui:Destroy()
                 LoadMainScript()
             else
                 mainWindow:Notify("KHONG THANH CONG", "Key cua ban khong hop le.", 4483362458, 3.5)
