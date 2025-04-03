@@ -685,10 +685,12 @@ local function InitializeUI()
             
             if response == trueData then
                 mainWindow:Notify("THANH CONG !!!", "LOAD SCRIPT CDVN - DEV BY KDZ...", 4483362458, 3.5)
-                local closeTween = CreateTween(mainFrame, {Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0.5, 0, 0.5, 0)}, 0.5)
-                closeTween:Play()
-                closeTween.Completed:Wait()
-                SGGui:Destroy()
+                closeButton.MouseButton1Click:Connect(function()
+                    local closeTween = CreateTween(mainFrame, {Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0.5, 0, 0.5, 0)}, 0.5)
+                    closeTween:Play()
+                    closeTween.Completed:Wait()
+                    SGGui:Destroy()
+                end)
                 LoadMainScript()
             else
                 mainWindow:Notify("KHONG THANH CONG", "Key cua ban khong hop le.", 4483362458, 3.5)
